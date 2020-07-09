@@ -10,8 +10,8 @@ import javax.imageio.ImageIO;
 
 public class Board {
 
-	public int width;
-	public int height;
+	private int width;
+	private int height;
 	public Block[][] blocks;
 	
 	public List<Coin> coins;
@@ -81,6 +81,16 @@ public class Board {
 		for (Ghost ghost : ghosts) {
 			ghost.render(g);
 		}
+	}
+
+	public int width() {
+		
+		return width;
+	}
+
+	public int height() {
+		
+		return height;
 	}
 	
 }

@@ -18,7 +18,7 @@ public class Controller extends Canvas implements Runnable, KeyListener {
 	private boolean isRunning = false;
 	private static final int WIDTH = 1280,HEIGHT = 960;
 	public static final String TITLE = "PACMAN";
-	public static Board boards;
+	public static Board boards;//board
 	private Thread thread;
 	public static SpriteSheet spriteSheet;
 
@@ -75,15 +75,15 @@ public synchronized void stop() {
 		Graphics g = bs.getDrawGraphics();
 		g.setColor(Color.black);
 		g.fillRect(0, 0, WIDTH, HEIGHT);
-		if(choice == -1) {
+
 		player.render(g);
 		boards.render(g);
-		}else {
-			g.setColor(Color.DARK_GRAY);
-			g.fillRect(0, 0, 200, 200);
-			g.setFont(new Font(Font.DIALOG,Font.BOLD,19));
-			g.drawString("chupa rola", 500, 500);
-		}
+//		else {
+//			g.setColor(Color.DARK_GRAY);
+//			g.fillRect(0, 0, 200, 200);
+//			g.setFont(new Font(Font.DIALOG,Font.BOLD,19));
+//			g.drawString("", 500, 500);
+//		}
 		g.dispose();
 		bs.show();
 		
@@ -93,10 +93,9 @@ public synchronized void stop() {
 
 
 	private void tick() {
-		if(choice == -1) {
+
 		player.tick();
 		boards.tick();
-		}
 	}
 	
 	

@@ -10,57 +10,57 @@ public class Ghost extends Rectangle{
 	private static final long serialVersionUID = 1L;
 	
 	private int random = 0,smart = 1,findPath = 2;
-	
+	private static final int WIDTH = 30,HEIGHT = 30;
 	private int state = random;
 	private int right = 0, left = 1, up = 2, down = 3;
-	private int dir = -1;
+	private int direction = -1;
 	private int time = 0;
 	
 	private int targetTime = 40*4;
 	
 	private int speed = 3;
 	
-	public Random randomGen;
+	private Random randomGen = new Random();
 
-	private int lastDir = -1;
+	private int lastDirection = -1;
+	
 	public Ghost(int x , int y) {
-		randomGen = new Random();
-		setBounds(x,y,30,30);
-		dir = randomGen.nextInt(4);
+		setBounds(x,y,WIDTH,HEIGHT);
+		direction = randomGen.nextInt(4);
 	}
 	
 	public void tick() {
 		if(state == random) {
-			if(dir == right) {
+			if(direction == right) {
 				if(canMove(x+speed,y)) {
 					x+=speed;
 				}
 				else {
-					dir = randomGen.nextInt(4);
+					direction = randomGen.nextInt(4);
 				}
 			}
-			else if(dir == left) {
+			else if(direction == left) {
 				if(canMove(x-speed,y)) {
 					x-=speed;
 				}
 				else {
-					dir = randomGen.nextInt(4);
+					direction = randomGen.nextInt(4);
 				}
 			}
-			else if(dir == up) {
+			else if(direction == up) {
 				if(canMove(x,y-speed)) {
 					y-=speed;
 				}
 				else {
-					dir = randomGen.nextInt(4);
+					direction = randomGen.nextInt(4);
 				}
 			}
-			else if(dir == down) {
+			else if(direction == down) {
 				if(canMove(x,y+speed)) {
 					y+=speed;
 				}
 				else {
-					dir = randomGen.nextInt(4);
+					direction = randomGen.nextInt(4);
 				}
 			}
 			
@@ -79,28 +79,28 @@ public class Ghost extends Rectangle{
 				if(canMove(x+speed,y)) {
 					x+=speed;
 					move = true;
-					lastDir = right;
+					lastDirection = right;
 				}
 			}
 			if(x>Controller.player.x) {
 				if(canMove(x-speed,y)) {
 					x-=speed;
 					move = true;
-					lastDir = left;
+					lastDirection = left;
 				}
 			}
 			if(y<Controller.player.y) {
 				if(canMove(x,y+speed)) {
 					y+=speed;
 					move = true;
-					lastDir = down;
+					lastDirection = down;
 				}
 			}
 			if(y>Controller.player.y) {
 				if(canMove(x,y-speed)) {
 					y-=speed;
 					move = true;
-					lastDir = up;
+					lastDirection = up;
 				}
 			}
 			
@@ -115,7 +115,7 @@ public class Ghost extends Rectangle{
 			}
 			
 			else if(state == findPath) {
-				if(lastDir == right) {
+				if(lastDirection == right) {
 					if(y < Controller.player.y) {
 						if(canMove(x,y+speed)) {
 							y+=speed;
@@ -134,7 +134,7 @@ public class Ghost extends Rectangle{
 					}
 					
 				}
-				else if(lastDir == left) {
+				else if(lastDirection == left) {
 					if(y < Controller.player.y) {
 						if(canMove(x,y+speed)) {
 							y+=speed;
@@ -153,7 +153,7 @@ public class Ghost extends Rectangle{
 					}
 									
 				}
-				else if(lastDir == up) {
+				else if(lastDirection == up) {
 					if(x < Controller.player.x) {
 						if(canMove(x+speed,y)) {
 							x+=speed;
@@ -172,7 +172,7 @@ public class Ghost extends Rectangle{
 					}
 					
 				}
-				else if(lastDir == down) {
+				else if(lastDirection == down) {
 					if(x < Controller.player.x) {
 						if(canMove(x+speed,y)) {
 							x+=speed;
@@ -205,12 +205,22 @@ public class Ghost extends Rectangle{
 	
 private boolean canMove(int nextX, int nextY) {
 		
-		Rectangle bounds = new Rectangle(nextX,nextY,width,height);
+		Rectangle nextPosition = new Rectangle(nextX,nextY,width,height);
 		
-		for(int x = 0; x<Controller.boards.blocks.length; x++) {
-			for(int y = 0; y<Controller.boards.blocks[0].length; y++) {
+		int widthLimit = nextX+width;
+		if(widthLimit > Controller.boards.width() ) {
+			return false;
+		}
+		int heightLimit = nextY+height;
+		int boardHeight = Controller.boards.height();
+		if(heightLimit > boardHeight ) {
+			return false;
+		}
+		
+		for(int x = nextX; x<widthLimit; x+=1) {
+			for(int y = nextY; y<heightLimit; y+=1) {
 				if(Controller.boards.blocks[x][y] != null) {
-					if(bounds.intersects(Controller.boards.blocks[x][y])) {
+					if(nextPosition.intersects(Controller.boards.blocks[x][y])) {
 						return false;
 					}
 				}
@@ -221,7 +231,7 @@ private boolean canMove(int nextX, int nextY) {
 	}
 	
 	public void render(Graphics g) {
-		g.drawImage(Texture.ghost, x, y,30,30, null);
+		g.drawImage(Texture.ghost, x, y,WIDTH,HEIGHT, null);
 		
 	}
 	

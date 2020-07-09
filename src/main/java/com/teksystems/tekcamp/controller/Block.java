@@ -7,11 +7,6 @@ import java.awt.Rectangle;
 public class Block extends Rectangle{
 
 
-
-
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 
 
