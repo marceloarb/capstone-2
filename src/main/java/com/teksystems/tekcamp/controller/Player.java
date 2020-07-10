@@ -1,6 +1,5 @@
 package com.teksystems.tekcamp.controller;
 
-import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Rectangle;
 
@@ -10,6 +9,7 @@ public class Player extends Rectangle{
 	
 	public boolean right,left,up,down;
 	private int speed = 3;
+	private int points = 0;
 	
 	public Player(int x, int y) {
 		setBounds(x,y,30,30);
@@ -21,16 +21,18 @@ public class Player extends Rectangle{
 		if(up && canMove(x,y-speed)) y-=speed;
 		if(down && canMove(x,y+speed)) y+=speed;
 		
-		for(int i = 0; i<Controller.boards.coins.size(); i++) {
-			if(this.intersects(Controller.boards.coins.get(i))) {
-				Controller.boards.coins.remove(i);
+		for(int i = 0; i<Controller.board.coins.size(); i++) {
+			if(this.intersects(Controller.board.coins.get(i))) {
+				Controller.board.coins.remove(i);
+				points +=100;
+				System.out.println(points);
 				break;
 			}
 		};
 		
-		if(Controller.boards.coins.size() == 0) {
+		if(Controller.board.coins.size() == 0) {
 			Controller.player = new Player(0,0);
-			Controller.boards = new Board("/Image/pacman1.png");
+			Controller.board = new Board("/Image/pacman1.png");
 			return;
 		}
 		
@@ -40,10 +42,10 @@ public class Player extends Rectangle{
 		
 		Rectangle bounds = new Rectangle(nextX,nextY,width,height);
 		
-		for(int x = 0; x<Controller.boards.blocks.length; x++) {
-			for(int y = 0; y<Controller.boards.blocks[0].length; y++) {
-				if(Controller.boards.blocks[x][y] != null) {
-					if(bounds.intersects(Controller.boards.blocks[x][y])) {
+		for(int x = 0; x<Controller.board.blocks.length; x++) {
+			for(int y = 0; y<Controller.board.blocks[0].length; y++) {
+				if(Controller.board.blocks[x][y] != null) {
+					if(bounds.intersects(Controller.board.blocks[x][y])) {
 						return false;
 					}
 				}

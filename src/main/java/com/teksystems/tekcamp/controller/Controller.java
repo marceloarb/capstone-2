@@ -12,21 +12,30 @@ import java.awt.image.BufferStrategy;
 import com.teksystems.tekcamp.Menu.Menu;
 
 
+
+
 public class Controller extends Canvas implements Runnable, KeyListener {
 	//Canvas is a blank rectangular area where we can draw or trap input events from the user.
 	private static final long serialVersionUID = 1L;
 	private boolean isRunning = false;
-	private static final int WIDTH = 1280,HEIGHT = 960;
+	public static  int WIDTH = 1280;
+	private static int HEIGHT = 960;
 	public static final String TITLE = "PACMAN";
-	public static Board boards;//board
+	public static Board board;//board
 	private Thread thread;
 	public static SpriteSheet spriteSheet;
 
 	int choice = 1;
 	
+	private Menu menu;
 	public static Player player;
 	
+	private enum STATE{
+		MENU,
+		GAME
+	}
 	
+	private STATE state = STATE.MENU;
 	
 	public Controller() {
 		Dimension dimension = new Dimension(Controller.WIDTH,Controller.HEIGHT);
@@ -35,8 +44,9 @@ public class Controller extends Canvas implements Runnable, KeyListener {
 		setMaximumSize(dimension);
 		addKeyListener(this);
 		player = new Player(Controller.WIDTH/2,Controller.HEIGHT/2);
-		boards = new Board("/Image/pacman1.png");
+		board = new Board("/Image/pacman1.png");
 		spriteSheet = new SpriteSheet("/Image/caracter1.png");
+		menu = new Menu();
 		
 		new Texture();
 	}
@@ -75,15 +85,13 @@ public synchronized void stop() {
 		Graphics g = bs.getDrawGraphics();
 		g.setColor(Color.black);
 		g.fillRect(0, 0, WIDTH, HEIGHT);
-
-		player.render(g);
-		boards.render(g);
-//		else {
-//			g.setColor(Color.DARK_GRAY);
-//			g.fillRect(0, 0, 200, 200);
-//			g.setFont(new Font(Font.DIALOG,Font.BOLD,19));
-//			g.drawString("", 500, 500);
-//		}
+		if(state == STATE.GAME) {
+			player.render(g);
+		board.render(g);
+		}
+		else if(state == STATE.MENU){
+			menu.render(g);
+		}
 		g.dispose();
 		bs.show();
 		
@@ -93,9 +101,11 @@ public synchronized void stop() {
 
 
 	private void tick() {
-
-		player.tick();
-		boards.tick();
+		if(state == STATE.GAME) {
+			player.tick();
+			board.tick();
+		}
+		
 	}
 	
 	
@@ -143,33 +153,36 @@ public synchronized void stop() {
 
 	@Override
 	public void keyPressed(KeyEvent e) {
-		if(e.getKeyCode() == KeyEvent.VK_RIGHT) {
-			player.right = true;
-			player.left = false;
-			player.up = false;
-			player.down = false;
-			return;
-		}
-		if(e.getKeyCode() == KeyEvent.VK_LEFT) {
-			player.left = true;
-			player.right = false;
-			player.up = false;
-			player.down = false;
-			return;
-		}
-		if(e.getKeyCode() == KeyEvent.VK_UP) {
-			player.up = true;
-			player.left = false;
-			player.right = false;
-			player.down = false;
-			return;
-		}
-		if(e.getKeyCode() == KeyEvent.VK_DOWN) {
-			player.down = true;
-			player.left = false;
-			player.up = false;
-			player.right = false;
-			return;
+		if(state == STATE.GAME) {
+			
+			if(e.getKeyCode() == KeyEvent.VK_RIGHT) {
+				player.right = true;
+				player.left = false;
+				player.up = false;
+				player.down = false;
+				return;
+			}
+			if(e.getKeyCode() == KeyEvent.VK_LEFT) {
+				player.left = true;
+				player.right = false;
+				player.up = false;
+				player.down = false;
+				return;
+			}
+			if(e.getKeyCode() == KeyEvent.VK_UP) {
+				player.up = true;
+				player.left = false;
+				player.right = false;
+				player.down = false;
+				return;
+			}
+			if(e.getKeyCode() == KeyEvent.VK_DOWN) {
+				player.down = true;
+				player.left = false;
+				player.up = false;
+				player.right = false;
+				return;
+			}
 		}
 	}
 

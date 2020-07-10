@@ -208,19 +208,20 @@ private boolean canMove(int nextX, int nextY) {
 		Rectangle nextPosition = new Rectangle(nextX,nextY,width,height);
 		
 		int widthLimit = nextX+width;
-		if(widthLimit > Controller.boards.width() ) {
-			return false;
+		int boardWidth = Controller.board.width();
+		if(widthLimit > boardWidth ) {
+			widthLimit = boardWidth;
 		}
 		int heightLimit = nextY+height;
-		int boardHeight = Controller.boards.height();
+		int boardHeight = Controller.board.height();
 		if(heightLimit > boardHeight ) {
-			return false;
+			heightLimit = boardHeight;
 		}
 		
 		for(int x = nextX; x<widthLimit; x+=1) {
-			for(int y = nextY; y<heightLimit; y+=1) {
-				if(Controller.boards.blocks[x][y] != null) {
-					if(nextPosition.intersects(Controller.boards.blocks[x][y])) {
+			for(int y = nextY; y<nextY+height; y+=1) {
+				if(Controller.board.blocks[x][y] != null) {
+					if(nextPosition.intersects(Controller.board.blocks[x][y])) {
 						return false;
 					}
 				}
