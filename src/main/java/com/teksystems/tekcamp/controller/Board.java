@@ -10,9 +10,10 @@ import java.util.List;
 
 public class Board {
 
-    public Block[][] blocks;
-    public ArrayList<Point> coins = new ArrayList<>();
-    public ArrayList<Point> ghosts = new ArrayList<>();
+    private ArrayList<Point> coins = new ArrayList<>();
+    private ArrayList<Point> ghosts = new ArrayList<>();
+    private ArrayList<Point> wall = new ArrayList<>();
+    
     private int width;
     private int height;
     private Point playerLocation;
@@ -24,13 +25,12 @@ public class Board {
             this.width = map.getWidth();
             this.height = map.getHeight();
             int[] pixels = new int[width * height];
-            blocks = new Block[width][height];
             map.getRGB(0, 0, width, height, pixels, 0, width);
             for (int x = 0; x < width; x++) {
                 for (int y = 0; y < height; y++) {
                     int val = pixels[x + (y * width)];
                     if (val == 0xFF000000) {
-                        blocks[x][y] = new Block(x * 32, y * 32);
+                    	wall.add(new Point(x * 32, y * 32));
                     } else if (val == 0xFF0000FF) {
                      playerLocation = new Point(x*32,y*32);
                     } else if (val == 0xFFFF0000) {
@@ -58,21 +58,12 @@ public class Board {
     public ArrayList<Point> getLocationCoins(){
     	return coins;
     }
-
-    public void render(Graphics g) {
-        for (int x = 0; x < width; x++) {
-            for (int y = 0; y < height; y++) {
-
-                if (blocks[x][y] != null) {
-                    blocks[x][y].render(g);
-
-                }
-
-
-            }
-        }
-        
+    
+    public ArrayList<Point> getLocationWall(){
+    	return wall;
     }
+    
+
 
     public int width() {
 

@@ -221,15 +221,15 @@ public class Ghost extends Rectangle {
             return false;
         }
 
-        for (int x = nextX; x < widthLimit; x += 1) {
-            for (int y = nextY; y < heightLimit; y += 1) {
-                if (Controller.board.blocks[x][y] != null) {
-                    if (nextPosition.intersects(Controller.board.blocks[x][y])) {
-                        return false;
-                    }
-                }
-            }
-        }
+//        for (int x = nextX; x < widthLimit; x += 1) {
+//            for (int y = nextY; y < heightLimit; y += 1) {
+//                if (Controller.board.blocks[x][y] != null) {
+//                    if (nextPosition.intersects(Controller.board.blocks[x][y])) {
+//                        return false;
+//                    }
+//                }
+//            }
+//        }
 
         return true;
     }

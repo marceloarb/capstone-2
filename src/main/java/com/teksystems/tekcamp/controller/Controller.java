@@ -22,11 +22,23 @@ public class Controller extends Canvas implements Runnable, KeyListener {
     private static final boolean IS_STOP_REQUESTED = false;
     public static Player player;
     public static Board board;
-    private static ArrayList<Ghost>  ghosts = new ArrayList<>();
-    private static ArrayList<Coin> coins = new ArrayList<>();
+    private ArrayList<Ghost>  ghosts = new ArrayList<>();
+    public static  ArrayList<Coin> coins = new ArrayList<>();
+    public static ArrayList<Block> walls = new ArrayList<>();
     
     
-    int choice = 1;
+    
+    
+    public ArrayList<Coin> getCoins() {
+		return coins;
+	}
+
+
+	public ArrayList<Block> getWalls() {
+		return walls;
+	}
+
+	int choice = 1;
     private Thread thread = new Thread(this);
 
 
@@ -46,6 +58,10 @@ public class Controller extends Canvas implements Runnable, KeyListener {
         for(Point coin: board.getLocationCoins()) {
         	this.coins.add(new Coin(coin));
         	
+        }
+        
+        for(Point wall: board.getLocationWall()) {
+        	this.walls.add(new Block(wall));
         }
         
         new Texture();
@@ -72,8 +88,10 @@ public class Controller extends Canvas implements Runnable, KeyListener {
         g.setColor(Color.black);
         g.fillRect(0, 0, WIDTH, HEIGHT);
 
+        for(Block wall: walls) {
+        	wall.render(g);
+        }
         
-        board.render(g);
         player.render(g);
         for(Ghost ghost : ghosts) {
         	ghost.render(g);
@@ -87,11 +105,11 @@ public class Controller extends Canvas implements Runnable, KeyListener {
     }
 
     private void tick() {
-        if (board.coins.size() == 0) {
-            player.reset();
-//            ghosts = new ArrayList<>();
-            board = new Board("/Image/pacman1.png", player);
-        }
+//        if (board.coins.size() == 0) {
+//            player.reset();
+////            ghosts = new ArrayList<>();
+//            board = new Board("/Image/pacman1.png", player);
+//        }
         player.tick();
 //        for (Ghost ghost : ghosts) {
 //            ghost.tick();
