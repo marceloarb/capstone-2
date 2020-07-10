@@ -1,13 +1,24 @@
 package com.teksystems.tekcamp;
 
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
+import com.teksystems.tekcamp.controller.Controller;
 
-@SpringBootApplication
+import javax.swing.*;
+
 public class Application {
 
-	public static void main(String[] args) {
-		SpringApplication.run(Application.class, args);
-	}
+    public static void main(String[] args) {
+        Controller controller = new Controller();
+
+        JFrame frame = new JFrame();
+        frame.setTitle(Controller.getTitle());
+        frame.add(controller);
+        frame.setResizable(false);
+        frame.pack();
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setLocationRelativeTo(null);
+        frame.setVisible(true);
+
+        controller.start();
+    }
 
 }
