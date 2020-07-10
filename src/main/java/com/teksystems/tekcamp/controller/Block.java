@@ -15,9 +15,6 @@ public class Block extends Rectangle{
 		setBounds(coordinates.x,coordinates.y,32,32);
 	}
 	
-	
-	
-
 
 	public void render(Graphics g ) {
 		g.setColor(Color.blue);

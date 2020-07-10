@@ -49,19 +49,18 @@ public class Controller extends Canvas implements Runnable, KeyListener {
         setMaximumSize(dimension);
         addKeyListener(this);
         player = new Player(PLAYER_INITIAL_X, PLAYER_INITIAL_Y);
-        board = new Board("/Image/pacman1.png", player);
-        for(Point ghost: board.getLocationGhosts()) {
-        	this.ghosts.add(new Ghost(ghost));
+        for(Point location: Board.getInstance().getLocationGhosts()) {
+        	this.ghosts.add(new Ghost(location));
         	
         }
         
-        for(Point coin: board.getLocationCoins()) {
-        	this.coins.add(new Coin(coin));
+        for(Point location: Board.getInstance().getLocationCoins()) {
+        	this.coins.add(new Coin(location));
         	
         }
         
-        for(Point wall: board.getLocationWall()) {
-        	this.walls.add(new Block(wall));
+        for(Point location: Board.getInstance().getLocationWall()) {
+        	this.walls.add(new Block(location));
         }
         
         new Texture();
@@ -88,32 +87,34 @@ public class Controller extends Canvas implements Runnable, KeyListener {
         g.setColor(Color.black);
         g.fillRect(0, 0, WIDTH, HEIGHT);
 
+        
         for(Block wall: walls) {
         	wall.render(g);
         }
         
-        player.render(g);
-        for(Ghost ghost : ghosts) {
-        	ghost.render(g);
-        }
         for(Coin coin: coins) {
         	coin.render(g);
         }
+        for(Ghost ghost : ghosts) {
+        	ghost.render(g);
+        }
+        
+        player.render(g);
         g.dispose();
         bs.show();
 
     }
 
     private void tick() {
-//        if (board.coins.size() == 0) {
-//            player.reset();
-////            ghosts = new ArrayList<>();
-//            board = new Board("/Image/pacman1.png", player);
-//        }
+        if (coins.size() == 0) {
+            player.reset();
+            
+            
+        }
         player.tick();
-//        for (Ghost ghost : ghosts) {
-//            ghost.tick();
-//        }
+        for (Ghost ghost : ghosts) {
+            ghost.tick();
+        }
         
     }
 

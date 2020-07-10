@@ -1,6 +1,7 @@
 package com.teksystems.tekcamp.controller;
 
 import java.awt.*;
+import java.util.ArrayList;
 import java.util.Random;
 
 
@@ -21,6 +22,7 @@ public class Ghost extends Rectangle {
     private Random randomGen = new Random();
 
     private int lastDirection = -1;
+	private Board board = Board.getInstance();
 
     public Ghost(Point coordinates) {
         setBounds(coordinates.x, coordinates.y, WIDTH, HEIGHT);
@@ -210,28 +212,9 @@ public class Ghost extends Rectangle {
 
     private boolean canMove(int nextX, int nextY) {
         Rectangle nextPosition = new Rectangle(nextX, nextY, width, height);
-
-        int widthLimit = nextX + width;
-        if (widthLimit > Controller.board.width()) {
-            return false;
-        }
-        int heightLimit = nextY + height;
-        int boardHeight = Controller.board.height();
-        if (heightLimit > boardHeight) {
-            return false;
-        }
-
-//        for (int x = nextX; x < widthLimit; x += 1) {
-//            for (int y = nextY; y < heightLimit; y += 1) {
-//                if (Controller.board.blocks[x][y] != null) {
-//                    if (nextPosition.intersects(Controller.board.blocks[x][y])) {
-//                        return false;
-//                    }
-//                }
-//            }
-//        }
-
-        return true;
+        
+        return board.isOpen(nextPosition);
+       
     }
 
     public void render(Graphics g) {

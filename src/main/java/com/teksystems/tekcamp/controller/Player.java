@@ -12,6 +12,7 @@ public class Player extends Rectangle {
     private final int resetY;
     public boolean right, left, up, down;
     private int speed = 3;
+    private int score = 0;
 
     public Player(int x, int y) {
         resetX = x;
@@ -28,6 +29,7 @@ public class Player extends Rectangle {
         for (int i = 0; i < Controller.coins.size(); i++) {
             if (this.intersects(Controller.coins.get(i))) {
             	Controller.coins.remove(i);
+            	score +=50;
                 break;
             }
         }
@@ -50,9 +52,9 @@ public class Player extends Rectangle {
     }
 
     public void render(Graphics g) {
-        g.drawImage(Texture.player[0], x, y, 30, 30, null);
+        g.drawImage(Texture.player[0], x, y, 25, 25, null);
     }
-
+    
     public void reset() {
         setBounds(resetX, resetY, WIDTH, HEIGHT);
     }
