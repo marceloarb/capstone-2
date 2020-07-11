@@ -1,59 +1,38 @@
 package com.teksystems.tekcamp.controller;
 
 import java.awt.*;
-import java.util.ArrayList;
 import java.util.Random;
 
 
 public class Ghost extends Rectangle {
 
     private static final long serialVersionUID = 1L;
-    private static final int WIDTH = 30, HEIGHT = 30;
-    private int random = 0, smart = 1, findPath = 2;
+    private static final int WIDTH = 30;
+    private static final int HEIGHT = 30;
+    private static final int random = 0;
+    private static final int findPath = 2;
+    private static final int right = 0;
+    private static final int left = 1;
+    private static final int up = 2;
+    private static final int down = 3;
+    private static final int targetTime = 40 * 4;
+    private static final int speed = 3;
+    private static final Random randomGen = new Random();
+    private final Board board = Board.getInstance();
     private int state = random;
-    private int right = 0, left = 1, up = 2, down = 3;
-    private int direction = -1;
+    private int direction;
     private int time = 0;
-
-    private int targetTime = 40 * 4;
-
-    private int speed = 3;
-
-    private Random randomGen = new Random();
-
     private int lastDirection = -1;
-	private Board board = Board.getInstance();
+    private Point playerLocation;
 
-    public Ghost(Point coordinates) {
-        setBounds(coordinates.x, coordinates.y, WIDTH, HEIGHT);
+    public Ghost(Point ghostLocation, Point playerLocation) {
+        this.playerLocation = playerLocation;
+        setBounds(ghostLocation.x, ghostLocation.y, WIDTH, HEIGHT);
         direction = randomGen.nextInt(4);
     }
 
-//	private int[] identifyLegalDirections(){
-//		int[] directions = new int[4];
-//
-//		Rectangle right = new Rectangle((x+1),y, WIDTH, HEIGHT);
-//
-//		(x-1), y;
-//		x, (y-1);
-//		x, (y+1);
-//
-//		if(!board.doesIntersectWithWall(right)){
-//			directions[0]=right;
-//		}
-//
-//		return directions;
-//	}
-
     public void tick() {
-
-//		moveGhost();
-//		int[] possibleDirections = identifyLegalDirections();
-//		int selectedDirection = getRandomDirection();
-//		setNextMove(selectedDirection);
-//
-
-
+        int smart = 1;
         if (state == random) {
             if (direction == right) {
                 if (canMove(x + speed, y)) {
@@ -88,31 +67,29 @@ public class Ghost extends Rectangle {
             }
 
         } else if (state == smart) {
-            //Follow the player
-
             boolean move = false;
-            if (x < Controller.player.x) {
+            if (x < playerLocation.getX()) {
                 if (canMove(x + speed, y)) {
                     x += speed;
                     move = true;
                     lastDirection = right;
                 }
             }
-            if (x > Controller.player.x) {
+            if (x > playerLocation.getY()) {
                 if (canMove(x - speed, y)) {
                     x -= speed;
                     move = true;
                     lastDirection = left;
                 }
             }
-            if (y < Controller.player.y) {
+            if (y < playerLocation.getY()) {
                 if (canMove(x, y + speed)) {
                     y += speed;
                     move = true;
                     lastDirection = down;
                 }
             }
-            if (y > Controller.player.y) {
+            if (y > playerLocation.getY()) {
                 if (canMove(x, y - speed)) {
                     y -= speed;
                     move = true;
@@ -120,7 +97,7 @@ public class Ghost extends Rectangle {
                 }
             }
 
-            if (x == Controller.player.x && y == Controller.player.y) move = true;
+            if (getLocation().equals(playerLocation)) move = true;
             if (!move) {
                 state = findPath;
             }
@@ -130,7 +107,7 @@ public class Ghost extends Rectangle {
                 time = 0;
             } else if (state == findPath) {
                 if (lastDirection == right) {
-                    if (y < Controller.player.y) {
+                    if (y < playerLocation.getY()) {
                         if (canMove(x, y + speed)) {
                             y += speed;
                             state = smart;
@@ -147,7 +124,7 @@ public class Ghost extends Rectangle {
                     }
 
                 } else if (lastDirection == left) {
-                    if (y < Controller.player.y) {
+                    if (y < playerLocation.getY()) {
                         if (canMove(x, y + speed)) {
                             y += speed;
                             state = smart;
@@ -164,7 +141,7 @@ public class Ghost extends Rectangle {
                     }
 
                 } else if (lastDirection == up) {
-                    if (x < Controller.player.x) {
+                    if (x < playerLocation.getX()) {
                         if (canMove(x + speed, y)) {
                             x += speed;
                             state = smart;
@@ -181,7 +158,7 @@ public class Ghost extends Rectangle {
                     }
 
                 } else if (lastDirection == down) {
-                    if (x < Controller.player.x) {
+                    if (x < playerLocation.getX()) {
                         if (canMove(x + speed, y)) {
                             x += speed;
                             state = smart;
@@ -212,13 +189,13 @@ public class Ghost extends Rectangle {
 
     private boolean canMove(int nextX, int nextY) {
         Rectangle nextPosition = new Rectangle(nextX, nextY, width, height);
-        
+
         return board.isOpen(nextPosition);
-       
+
     }
 
     public void render(Graphics g) {
-    	
+
         g.drawImage(Texture.ghost, x, y, WIDTH, HEIGHT, null);
 
     }

@@ -14,15 +14,14 @@ public class Controller extends Canvas implements Runnable, KeyListener {
     private static final long serialVersionUID = 1L;
     private static final int WIDTH = 1280, HEIGHT = 960;
     private static final boolean IS_STOP_REQUESTED = false;
-    public static Player player;
     public static ArrayList<Coin> coins = new ArrayList<>();
     public static ArrayList<Block> walls = new ArrayList<>();
-    private static Board board = Board.getInstance();
-    int choice = 1;
-    State state = State.MENU;
-    private Menu menu = new Menu();
-    private ArrayList<Ghost> ghosts = new ArrayList<>();
-    private Thread thread = new Thread(this);
+    private final Player player;
+    @SuppressWarnings("unused")  // Menu use is currently commented out in another class
+    private final Menu menu = new Menu();
+    private final ArrayList<Ghost> ghosts = new ArrayList<>();
+    private final Thread thread = new Thread(this);
+    private State state = State.MENU;
 
     public Controller() {
         Dimension dimension = new Dimension(Controller.WIDTH, Controller.HEIGHT);
@@ -30,22 +29,18 @@ public class Controller extends Canvas implements Runnable, KeyListener {
         setMinimumSize(dimension);
         setMaximumSize(dimension);
         addKeyListener(this);
+        Board board = Board.getInstance();
         player = new Player((int) board.getLocationPlayer().getX(), (int) board.getLocationPlayer().getY());
         for (Point location : Board.getInstance().getLocationGhosts()) {
-            this.ghosts.add(new Ghost(location));
-
+            this.ghosts.add(new Ghost(location, player.getLocation()));
         }
-
         for (Point location : Board.getInstance().getLocationCoins()) {
             this.coins.add(new Coin(location));
-
         }
-
         for (Point location : Board.getInstance().getLocationWall()) {
             this.walls.add(new Block(location));
             System.out.println(walls);
         }
-
         new Texture();
     }
 
@@ -70,7 +65,6 @@ public class Controller extends Canvas implements Runnable, KeyListener {
         g.setColor(Color.black);
         g.fillRect(0, 0, WIDTH, HEIGHT);
 
-//        if(state == State.GAME) {
         for (Block wall : walls) {
             wall.render(g);
         }
@@ -83,15 +77,8 @@ public class Controller extends Canvas implements Runnable, KeyListener {
         }
 
         player.render(g);
-//        }
-//        else if(state == State.MENU) {
-//        	menu.render(g);
-//        }
-
-
         g.dispose();
         bs.show();
-
     }
 
     private void tick() {
@@ -110,20 +97,18 @@ public class Controller extends Canvas implements Runnable, KeyListener {
 
     }
 
-
     @Override
     public void run() {
         //So you dont have to click on the window to move the player
         requestFocus();
         //This function below is to set the time we want our tread to run.
-        Long lastTime = System.nanoTime();
+        long lastTime = System.nanoTime();
         double delta = 0;
         //targetTick is the time we want our game to run.
         double targetTick = 40.0;
         double interval = 1000000000 / targetTick;
         int framespersecond = 0;
         double timer = System.currentTimeMillis();
-
         //noinspection InfiniteLoopStatement,LoopConditionNotUpdatedInsideLoop,LoopConditionNotUpdatedInsideLoop
         while (!IS_STOP_REQUESTED) {
             long now = System.nanoTime();
@@ -135,7 +120,6 @@ public class Controller extends Canvas implements Runnable, KeyListener {
                 framespersecond++;
                 delta--;
             }
-
             if (System.currentTimeMillis() - timer >= 1000) {
                 framespersecond = 0;
                 timer += 1000;
@@ -177,6 +161,7 @@ public class Controller extends Canvas implements Runnable, KeyListener {
             player.left = false;
             player.up = false;
             player.right = false;
+            //noinspection UnnecessaryReturnStatement
             return;
         }
     }
@@ -189,6 +174,4 @@ public class Controller extends Canvas implements Runnable, KeyListener {
         if (e.getKeyCode() == KeyEvent.VK_DOWN) player.down = false;
 
     }
-
-
 }
