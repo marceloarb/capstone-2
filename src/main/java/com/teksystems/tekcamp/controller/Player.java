@@ -12,8 +12,6 @@ public class Player extends Rectangle {
     private final int resetY;
     public boolean right, left, up, down;
     private int speed = 3;
-    private int score = 0;
-
     public Player(int x, int y) {
         resetX = x;
         resetY = y;
@@ -26,13 +24,7 @@ public class Player extends Rectangle {
         if (up && canMove(x, y - speed)) y -= speed;
         if (down && canMove(x, y + speed)) y += speed;
 
-        for (int i = 0; i < Controller.coins.size(); i++) {
-            if (this.intersects(Controller.coins.get(i))) {
-            	Controller.coins.remove(i);
-            	score +=50;
-                break;
-            }
-        }
+        
     }
 
     private boolean canMove(int nextX, int nextY) {

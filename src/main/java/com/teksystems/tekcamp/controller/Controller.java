@@ -14,7 +14,7 @@ public class Controller extends Canvas implements Runnable, KeyListener {
     private static final long serialVersionUID = 1L;
     private static final int WIDTH = 1280, HEIGHT = 960;
     private static final boolean IS_STOP_REQUESTED = false;
-    public static ArrayList<Coin> coins = new ArrayList<>();
+    private static ArrayList<Coin> coins = new ArrayList<>();
     public static ArrayList<Block> walls = new ArrayList<>();
     private final Player player;
     @SuppressWarnings("unused")  // Menu use is currently commented out in another class
@@ -22,6 +22,7 @@ public class Controller extends Canvas implements Runnable, KeyListener {
     private final ArrayList<Ghost> ghosts = new ArrayList<>();
     private final Thread thread = new Thread(this);
     private State state = State.MENU;
+    private int score = 0;
 
     public Controller() {
         Dimension dimension = new Dimension(Controller.WIDTH, Controller.HEIGHT);
@@ -86,6 +87,13 @@ public class Controller extends Canvas implements Runnable, KeyListener {
             player.tick();
             for (Ghost ghost : ghosts) {
                 ghost.tick();
+            }
+        }
+        for(Coin candidate : coins) {
+            if (player.intersects(candidate)) {
+            	this.score +=50;
+            	coins.remove(candidate);
+                break;
             }
         }
         if (coins.size() == 0) {
