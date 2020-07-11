@@ -17,7 +17,7 @@ public class Board {
     private int height;
     private Point playerLocation;
 
-    public Board() {
+    private Board() {
         try {
             BufferedImage map = ImageIO.read(getClass().getResource("/Image/maze.png"));
             this.width = map.getWidth();
@@ -28,6 +28,7 @@ public class Board {
                 for (int y = 0; y < height; y++) {
                     int val = pixels[x + (y * width)];
                     if (val == 0xFF000000) {
+                    	wallLocations.add(new Point(x * 32, y * 32));
                         this.walls.add(new Block(new Point(x * 32, y * 32)));
                     } else if (val == 0xff4800ff) {
                         playerLocation = new Point(x * 32, y * 32);
@@ -42,7 +43,6 @@ public class Board {
             e.printStackTrace();
         }
     }
-
     public static Board getInstance() {
         if (board == null) {
             board = new Board();
@@ -64,7 +64,6 @@ public class Board {
     }
 
     public ArrayList<Point> getLocationWall() {
-        System.out.println(wallLocations);
         return wallLocations;
     }
 

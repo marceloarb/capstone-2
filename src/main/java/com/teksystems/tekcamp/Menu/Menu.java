@@ -7,17 +7,19 @@ import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.util.Scanner;
 
-import com.teksystems.tekcamp.controller.Controller;
 
-public class Menu{
+public class Menu extends MouseInput{
 	
 	private static final long serialVersionUID = 1L;
 	boolean exit;
-
+	public static State state = State.MENU;
+	private int width = 500;
 	
-	public Rectangle playButton = new Rectangle(1000/2,250,250,50);
-	public Rectangle helpButton = new Rectangle(1000/2,350,250,50);
-	public Rectangle quitButton = new Rectangle(1000/2,450,250,50);
+	public Rectangle playButton = new Rectangle(width,250,250,50);
+	public Rectangle helpButton = new Rectangle(width,350,250,50);
+	public Rectangle quitButton = new Rectangle(width,450,250,50);
+	
+	
 	
 	public void render(Graphics g) {
 
@@ -36,6 +38,26 @@ public class Menu{
 		g2d.draw(helpButton);
 		g2d.draw(quitButton);
 
+	}
+	
+	public void mousePressed(java.awt.event.MouseEvent e) {
+		int locationX = e.getX();
+		int locationY = e.getY();
+		
+		if(locationX >= width+100 && locationX <= width+200) {
+			if(locationY >= 250 && locationY <= 325) {
+				Menu.state = State.GAME;
+			}
+		}
+		if(locationX >= width+100 && locationX <= width+200) {
+			if(locationY >= 325 && locationY <= 400) {
+			}
+		}
+		if(locationX >= width+100 && locationX <= width+200) {
+			if(locationY >= 425 && locationY <= 500) {
+			}
+		}
+		
 	}
 	
 	public void run() {
@@ -102,4 +124,6 @@ public class Menu{
 		
 	}
 	
+	
+		
 }

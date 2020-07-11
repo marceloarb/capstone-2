@@ -1,12 +1,17 @@
 package com.teksystems.tekcamp.controller;
 
-import com.teksystems.tekcamp.Menu.Menu;
-
-import java.awt.*;
+import java.awt.Canvas;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Graphics;
+import java.awt.Point;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.image.BufferStrategy;
 import java.util.ArrayList;
+
+import com.teksystems.tekcamp.Menu.Menu;
+import com.teksystems.tekcamp.Menu.State;
 
 public class Controller extends Canvas implements Runnable, KeyListener {
     private static final String TITLE = "PACMAN";
@@ -21,7 +26,6 @@ public class Controller extends Canvas implements Runnable, KeyListener {
     private final Menu menu = new Menu();
     private final ArrayList<Ghost> ghosts = new ArrayList<>();
     private final Thread thread = new Thread(this);
-    private State state = State.MENU;
     private int score = 0;
 
     public Controller() {
@@ -30,6 +34,7 @@ public class Controller extends Canvas implements Runnable, KeyListener {
         setMinimumSize(dimension);
         setMaximumSize(dimension);
         addKeyListener(this);
+        this.addMouseListener(menu);
         Board board = Board.getInstance();
         player = new Player((int) board.getLocationPlayer().getX(), (int) board.getLocationPlayer().getY());
         for (Point location : Board.getInstance().getLocationGhosts()) {
@@ -40,7 +45,6 @@ public class Controller extends Canvas implements Runnable, KeyListener {
         }
         for (Point location : Board.getInstance().getLocationWall()) {
             this.walls.add(new Block(location));
-            System.out.println(walls);
         }
         new Texture();
     }
@@ -65,42 +69,45 @@ public class Controller extends Canvas implements Runnable, KeyListener {
         Graphics g = bs.getDrawGraphics();
         g.setColor(Color.black);
         g.fillRect(0, 0, WIDTH, HEIGHT);
-
-        for (Block wall : walls) {
+        if(Menu.state == State.GAME) {
+        	for (Block wall : walls) {
             wall.render(g);
+	        }
+	
+	        for (Coin coin : coins) {
+	            coin.render(g);
+	        }
+	        for (Ghost ghost : ghosts) {
+	            ghost.render(g);
+	        }
+	
+	        player.render(g);
+        }else if(Menu.state == State.MENU) {
+        	menu.render(g);
         }
-
-        for (Coin coin : coins) {
-            coin.render(g);
-        }
-        for (Ghost ghost : ghosts) {
-            ghost.render(g);
-        }
-
-        player.render(g);
+        
         g.dispose();
         bs.show();
     }
 
     private void tick() {
-        if (state == State.GAME) {
+        if (Menu.state == State.GAME) {
             player.tick();
             for (Ghost ghost : ghosts) {
                 ghost.tick();
             }
-        }
-        for (Coin candidate : coins) {
+            for (Coin candidate : coins) {
             if (player.intersects(candidate)) {
                 this.score += 50;
                 coins.remove(candidate);
                 break;
-            }
+            	}
+	        }
+	        if (coins.size() == 0) {
+	            player.reset();
+	        }
         }
-        if (coins.size() == 0) {
-            player.reset();
-
-
-        }
+        
 
 
     }
@@ -163,10 +170,11 @@ public class Controller extends Canvas implements Runnable, KeyListener {
 
     @Override
     public void keyReleased(KeyEvent e) {
-        if (e.getKeyCode() == KeyEvent.VK_RIGHT) player.right = false;
-        if (e.getKeyCode() == KeyEvent.VK_LEFT) player.left = false;
-        if (e.getKeyCode() == KeyEvent.VK_UP) player.up = false;
-        if (e.getKeyCode() == KeyEvent.VK_DOWN) player.down = false;
-
     }
+
+	
+
+	
+
+	
 }
