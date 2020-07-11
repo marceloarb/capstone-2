@@ -5,20 +5,17 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
 
 public class Board {
 
-    private ArrayList<Point> coinsLocations = new ArrayList<>();
-    private ArrayList<Point> ghostsLocations = new ArrayList<>();
-    private ArrayList<Point> wallLocations = new ArrayList<>();
-    private static ArrayList<Block> walls = new ArrayList<>();
-    
+    private volatile static Board board;
+    private final ArrayList<Block> walls = new ArrayList<>();
+    private final ArrayList<Point> coinsLocations = new ArrayList<>();
+    private final ArrayList<Point> ghostsLocations = new ArrayList<>();
+    private final ArrayList<Point> wallLocations = new ArrayList<>();
     private int width;
     private int height;
     private Point playerLocation;
-    private volatile static Board board;
 
     public Board() {
         try {
@@ -31,13 +28,13 @@ public class Board {
                 for (int y = 0; y < height; y++) {
                     int val = pixels[x + (y * width)];
                     if (val == 0xFF000000) {
-                    	this.walls.add(new Block(new Point(x*32,y*32)));
-                    } else if (val == 0xFF0000FF) {
-                     playerLocation = new Point(x*32,y*32);
+                        this.walls.add(new Block(new Point(x * 32, y * 32)));
+                    } else if (val == 0xff4800ff) {
+                        playerLocation = new Point(x * 32, y * 32);
                     } else if (val == 0xFFFF0000) {
                         ghostsLocations.add(new Point(x * 32, y * 32));
                     } else {
-                    	coinsLocations.add(new Point(x * 32, y * 32));
+                        coinsLocations.add(new Point(x * 32, y * 32));
                     }
                 }
             }
@@ -45,32 +42,31 @@ public class Board {
             e.printStackTrace();
         }
     }
-    
+
     public static Board getInstance() {
-		if(board == null) {
-			board = new Board();
-		}
-		return board;
-	}
+        if (board == null) {
+            board = new Board();
+        }
+        return board;
+    }
+
     public Point getLocationPlayer() {
-		return playerLocation;
-    	
+        return playerLocation;
     }
-    
-    public ArrayList<Point> getLocationGhosts(){
-    	
-    	return ghostsLocations;
+
+    public ArrayList<Point> getLocationGhosts() {
+
+        return ghostsLocations;
     }
-    
-    public ArrayList<Point> getLocationCoins(){
-    	return coinsLocations;
+
+    public ArrayList<Point> getLocationCoins() {
+        return coinsLocations;
     }
-    
-    public ArrayList<Point> getLocationWall(){
-    	System.out.println(wallLocations);
-    	return wallLocations;
+
+    public ArrayList<Point> getLocationWall() {
+        System.out.println(wallLocations);
+        return wallLocations;
     }
-    
 
 
     public int width() {
@@ -83,18 +79,17 @@ public class Board {
         return height;
     }
 
-	public boolean isOpen(Rectangle nextPosition) {
-		
-		for(Block wall : walls) {
-			  if (nextPosition.intersects(wall)) {
-                  return false;
-         }
-		}
-		
-		return true;
-	
-	}
+    public boolean isOpen(Rectangle nextPosition) {
 
-	
+        for (Block wall : walls) {
+            if (nextPosition.intersects(wall)) {
+                return false;
+            }
+        }
+
+        return true;
+
+    }
+
 
 }

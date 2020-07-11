@@ -1,64 +1,51 @@
 package com.teksystems.tekcamp.controller;
 
+import com.teksystems.tekcamp.Menu.Menu;
 
-import java.awt.Canvas;
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Graphics;
-import java.awt.Point;
+import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.image.BufferStrategy;
 import java.util.ArrayList;
 
-import com.teksystems.tekcamp.Menu.Menu;
-
-
-
-
 public class Controller extends Canvas implements Runnable, KeyListener {
-
     private static final String TITLE = "PACMAN";
     //Canvas is a blank rectangular area where we can draw or trap input events from the user.
     private static final long serialVersionUID = 1L;
     private static final int WIDTH = 1280, HEIGHT = 960;
-    private static final int PLAYER_INITIAL_X = Controller.WIDTH / 2;
-    private static final int PLAYER_INITIAL_Y = Controller.HEIGHT / 2;
     private static final boolean IS_STOP_REQUESTED = false;
     public static Player player;
-    public static Board board;
-    private Menu menu = new Menu();
-    private ArrayList<Ghost>  ghosts = new ArrayList<>();
-    public static  ArrayList<Coin> coins = new ArrayList<>();
+    public static ArrayList<Coin> coins = new ArrayList<>();
     public static ArrayList<Block> walls = new ArrayList<>();
-    
-
-	int choice = 1;
-    private Thread thread = new Thread(this);
-    
+    private static Board board = Board.getInstance();
+    int choice = 1;
     State state = State.MENU;
+    private Menu menu = new Menu();
+    private ArrayList<Ghost> ghosts = new ArrayList<>();
+    private Thread thread = new Thread(this);
+
     public Controller() {
         Dimension dimension = new Dimension(Controller.WIDTH, Controller.HEIGHT);
         setPreferredSize(dimension);
         setMinimumSize(dimension);
         setMaximumSize(dimension);
         addKeyListener(this);
-        player = new Player(PLAYER_INITIAL_X, PLAYER_INITIAL_Y);
-        for(Point location: Board.getInstance().getLocationGhosts()) {
-        	this.ghosts.add(new Ghost(location));
-        	
+        player = new Player((int) board.getLocationPlayer().getX(), (int) board.getLocationPlayer().getY());
+        for (Point location : Board.getInstance().getLocationGhosts()) {
+            this.ghosts.add(new Ghost(location));
+
         }
-        
-        for(Point location: Board.getInstance().getLocationCoins()) {
-        	this.coins.add(new Coin(location));
-        	
+
+        for (Point location : Board.getInstance().getLocationCoins()) {
+            this.coins.add(new Coin(location));
+
         }
-        
-        for(Point location: Board.getInstance().getLocationWall()) {
-        	this.walls.add(new Block(location));
-        	System.out.println(walls);
+
+        for (Point location : Board.getInstance().getLocationWall()) {
+            this.walls.add(new Block(location));
+            System.out.println(walls);
         }
-        
+
         new Texture();
     }
 
@@ -82,45 +69,45 @@ public class Controller extends Canvas implements Runnable, KeyListener {
         Graphics g = bs.getDrawGraphics();
         g.setColor(Color.black);
         g.fillRect(0, 0, WIDTH, HEIGHT);
-        
-        if(state == State.GAME) {
-        	for(Block wall: walls) {
-        	wall.render(g);
-	        }
-	        
-	        for(Coin coin: coins) {
-	        	coin.render(g);
-	        }
-	        for(Ghost ghost : ghosts) {
-	        	ghost.render(g);
-	        }
-	        
-	        player.render(g);
+
+//        if(state == State.GAME) {
+        for (Block wall : walls) {
+            wall.render(g);
         }
-        else if(state == State.MENU) {
-        	menu.render(g);
+
+        for (Coin coin : coins) {
+            coin.render(g);
         }
-        
-        
+        for (Ghost ghost : ghosts) {
+            ghost.render(g);
+        }
+
+        player.render(g);
+//        }
+//        else if(state == State.MENU) {
+//        	menu.render(g);
+//        }
+
+
         g.dispose();
         bs.show();
 
     }
 
     private void tick() {
-    	if(state == State.GAME) {
-    		player.tick();
-	        for (Ghost ghost : ghosts) {
-	            ghost.tick();
-	        }
-    	}
+        if (state == State.GAME) {
+            player.tick();
+            for (Ghost ghost : ghosts) {
+                ghost.tick();
+            }
+        }
         if (coins.size() == 0) {
             player.reset();
-            
-            
+
+
         }
-        
-        
+
+
     }
 
 
@@ -202,7 +189,6 @@ public class Controller extends Canvas implements Runnable, KeyListener {
         if (e.getKeyCode() == KeyEvent.VK_DOWN) player.down = false;
 
     }
-
 
 
 }
