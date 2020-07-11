@@ -3,7 +3,7 @@ package com.teksystems.tekcamp.controller;
 
 import java.awt.*;
 
-public class Player extends Rectangle{
+public class Player extends Rectangle {
 
     private static final long serialVersionUID = 1L;
     private static final int WIDTH = 30;
@@ -13,10 +13,10 @@ public class Player extends Rectangle{
     private final Board board = Board.getInstance();
     public boolean right, left, up, down;
     private int speed = 3;
-	private Rectangle location;
+    private Rectangle location;
 
     public Player(int x, int y) {
-    	this.location = new Rectangle(x,y,WIDTH,HEIGHT);
+        this.location = new Rectangle(x, y, WIDTH, HEIGHT);
         resetX = x;
         resetY = y;
         reset();
@@ -42,10 +42,13 @@ public class Player extends Rectangle{
         setBounds(resetX, resetY, WIDTH, HEIGHT);
     }
 
-	public boolean intersects(Rectangle gameObject) {
-		
-		return location.intersects(gameObject);
-	}
+    public boolean intersects(Rectangle gameObject) {
+        return location.intersects(gameObject);
+    }
+
+    public Point getLocation() {
+        return location.getLocation();
+    }
 }
     
 
