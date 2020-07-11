@@ -1,12 +1,17 @@
 package com.teksystems.tekcamp.controller;
 
-import java.awt.*;
+
+import java.awt.Canvas;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Graphics;
+import java.awt.Point;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.image.BufferStrategy;
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
+
+import com.teksystems.tekcamp.Menu.Menu;
 
 
 
@@ -22,26 +27,16 @@ public class Controller extends Canvas implements Runnable, KeyListener {
     private static final boolean IS_STOP_REQUESTED = false;
     public static Player player;
     public static Board board;
+    private Menu menu = new Menu();
     private ArrayList<Ghost>  ghosts = new ArrayList<>();
     public static  ArrayList<Coin> coins = new ArrayList<>();
     public static ArrayList<Block> walls = new ArrayList<>();
     
-    
-    
-    
-    public ArrayList<Coin> getCoins() {
-		return coins;
-	}
-
-
-	public ArrayList<Block> getWalls() {
-		return walls;
-	}
 
 	int choice = 1;
     private Thread thread = new Thread(this);
-
-
+    
+    State state = State.MENU;
     public Controller() {
         Dimension dimension = new Dimension(Controller.WIDTH, Controller.HEIGHT);
         setPreferredSize(dimension);
@@ -61,6 +56,7 @@ public class Controller extends Canvas implements Runnable, KeyListener {
         
         for(Point location: Board.getInstance().getLocationWall()) {
         	this.walls.add(new Block(location));
+        	System.out.println(walls);
         }
         
         new Texture();
@@ -86,35 +82,44 @@ public class Controller extends Canvas implements Runnable, KeyListener {
         Graphics g = bs.getDrawGraphics();
         g.setColor(Color.black);
         g.fillRect(0, 0, WIDTH, HEIGHT);
-
         
-        for(Block wall: walls) {
+        if(state == State.GAME) {
+        	for(Block wall: walls) {
         	wall.render(g);
+	        }
+	        
+	        for(Coin coin: coins) {
+	        	coin.render(g);
+	        }
+	        for(Ghost ghost : ghosts) {
+	        	ghost.render(g);
+	        }
+	        
+	        player.render(g);
+        }
+        else if(state == State.MENU) {
+        	menu.render(g);
         }
         
-        for(Coin coin: coins) {
-        	coin.render(g);
-        }
-        for(Ghost ghost : ghosts) {
-        	ghost.render(g);
-        }
         
-        player.render(g);
         g.dispose();
         bs.show();
 
     }
 
     private void tick() {
+    	if(state == State.GAME) {
+    		player.tick();
+	        for (Ghost ghost : ghosts) {
+	            ghost.tick();
+	        }
+    	}
         if (coins.size() == 0) {
             player.reset();
             
             
         }
-        player.tick();
-        for (Ghost ghost : ghosts) {
-            ghost.tick();
-        }
+        
         
     }
 

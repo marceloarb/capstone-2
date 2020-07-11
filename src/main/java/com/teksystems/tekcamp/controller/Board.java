@@ -67,6 +67,7 @@ public class Board {
     }
     
     public ArrayList<Point> getLocationWall(){
+    	System.out.println(wallLocations);
     	return wallLocations;
     }
     
@@ -84,15 +85,14 @@ public class Board {
 
 	public boolean isOpen(Rectangle nextPosition) {
 		
-		for (int x = 0; x < wallLocations.size(); x++) {
-            if (Controller.walls.get(x) != null) {
-                if (nextPosition.intersects(Controller.walls.get(x))) {
-                    return false;
-                }
-           }
-        }
+		for(Block wall : walls) {
+			  if (nextPosition.intersects(wall)) {
+                  return false;
+         }
+		}
 		
-				return false;
+		return true;
+	
 	}
 
 	

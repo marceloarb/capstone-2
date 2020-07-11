@@ -15,9 +15,9 @@ public class Menu{
 	boolean exit;
 
 	
-	public Rectangle playButton = new Rectangle(Controller.WIDTH/2,250,100,50);
-	public Rectangle helpButton = new Rectangle(Controller.WIDTH/2,350,100,50);
-	public Rectangle quitButton = new Rectangle(Controller.WIDTH/2,450,100,50);
+	public Rectangle playButton = new Rectangle(1000/2,250,250,50);
+	public Rectangle helpButton = new Rectangle(1000/2,350,250,50);
+	public Rectangle quitButton = new Rectangle(1000/2,450,250,50);
 	
 	public void render(Graphics g) {
 
@@ -26,12 +26,12 @@ public class Menu{
 		
 		g.setColor(Color.blue);
 		g.setFont(new Font(Font.DIALOG,Font.BOLD,50));
-		g.drawString("Pac-Man", Controller.WIDTH/2, 150);
+		g.drawString("Pac-Man", 1000/2, 150);
 		
 		g.setFont(new Font(Font.DIALOG,Font.BOLD,30));
-		g.drawString("Play", playButton.x,playButton.y );
-		g.drawString("Help", helpButton.x,helpButton.y );
-		g.drawString("Quit", quitButton.x,quitButton.y );
+		g.drawString("Play", playButton.x+100,playButton.y+35 );
+		g.drawString("Help", helpButton.x+100,helpButton.y+35 );
+		g.drawString("Quit", quitButton.x+100,quitButton.y+35 );
 		g2d.draw(playButton);
 		g2d.draw(helpButton);
 		g2d.draw(quitButton);
