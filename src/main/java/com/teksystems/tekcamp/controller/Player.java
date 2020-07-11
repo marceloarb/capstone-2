@@ -3,7 +3,7 @@ package com.teksystems.tekcamp.controller;
 
 import java.awt.*;
 
-public class Player extends Rectangle {
+public class Player  {
 
     private static final long serialVersionUID = 1L;
     private static final int WIDTH = 30;
@@ -12,43 +12,67 @@ public class Player extends Rectangle {
     private final int resetY;
     private final Board board = Board.getInstance();
     public boolean right, left, up, down;
-    private int speed = 3;
-    private Rectangle location;
+    private int speed = 10;
+    private Rectangle rectangle;
 
     public Player(int x, int y) {
-        this.location = new Rectangle(x, y, WIDTH, HEIGHT);
+        this.rectangle = new Rectangle(x, y, WIDTH, HEIGHT);
         resetX = x;
         resetY = y;
         reset();
     }
 
     public void tick() {
-        if (right && canMove(x + speed, y)) x += speed;
-        if (left && canMove(x - speed, y)) x -= speed;
-        if (up && canMove(x, y - speed)) y -= speed;
-        if (down && canMove(x, y + speed)) y += speed;
     }
 
     private boolean canMove(int nextX, int nextY) {
-        Rectangle nextPosition = new Rectangle(nextX, nextY, width, height);
+        Rectangle nextPosition = new Rectangle(nextX, nextY, WIDTH, HEIGHT);
         return board.isOpen(nextPosition);
     }
 
     public void render(Graphics g) {
-        g.drawImage(Texture.player[0], x, y, 25, 25, null);
+        g.drawImage(Texture.player[0], (int)rectangle.getX(), (int)rectangle.getY(), 25, 25, null);
     }
 
     public void reset() {
-        setBounds(resetX, resetY, WIDTH, HEIGHT);
+//        setBounds(resetX, resetY, WIDTH, HEIGHT);
     }
 
     public boolean intersects(Rectangle gameObject) {
-        return location.intersects(gameObject);
+        return rectangle.intersects(gameObject);
     }
 
     public Point getLocation() {
-        return location.getLocation();
+        return rectangle.getLocation();
     }
+
+	public void moveRight() {
+		if (canMove((int)rectangle.getX() + speed,(int) rectangle.getY())) {
+			rectangle.setLocation((int)rectangle.getX()+speed, (int)rectangle.getY()); 
+		}
+	}
+ 
+
+	public void moveLeft() {
+		if (canMove((int)rectangle.getX() - speed,(int) rectangle.getY())) {
+			rectangle.setLocation((int)rectangle.getX()-speed, (int)rectangle.getY()); 
+		}
+		
+	}
+
+	public void moveUp() {
+		if (canMove((int)rectangle.getX(),(int) rectangle.getY() - speed)) {
+			rectangle.setLocation((int)rectangle.getX(), (int)rectangle.getY()- speed); 
+		}
+		
+	}
+
+	public void moveDown() {
+		if (canMove((int)rectangle.getX(),(int) rectangle.getY() + speed)) {
+			rectangle.setLocation((int)rectangle.getX(), (int)rectangle.getY() + speed); 
+		}
+		
+	}
 }
     
 

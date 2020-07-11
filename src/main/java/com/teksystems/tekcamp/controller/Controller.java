@@ -142,36 +142,23 @@ public class Controller extends Canvas implements Runnable, KeyListener {
     }
 
     @Override
-    public void keyPressed(KeyEvent e) {
-        if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
-            player.right = true;
-            player.left = false;
-            player.up = false;
-            player.down = false;
-            return;
-        }
-        if (e.getKeyCode() == KeyEvent.VK_LEFT) {
-            player.left = true;
-            player.right = false;
-            player.up = false;
-            player.down = false;
-            return;
-        }
-        if (e.getKeyCode() == KeyEvent.VK_UP) {
-            player.up = true;
-            player.left = false;
-            player.right = false;
-            player.down = false;
-            return;
-        }
-        if (e.getKeyCode() == KeyEvent.VK_DOWN) {
-            player.down = true;
-            player.left = false;
-            player.up = false;
-            player.right = false;
-            //noinspection UnnecessaryReturnStatement
-            return;
-        }
+    public void keyPressed(KeyEvent key) {
+    	switch(key.getKeyCode()) {
+    	case KeyEvent.VK_RIGHT:
+    		player.moveRight();
+    		break;
+    	case KeyEvent.VK_LEFT:
+    		player.moveLeft();	
+    		break;
+    	case KeyEvent.VK_UP:
+    		player.moveUp();
+    		break;
+    	case KeyEvent.VK_DOWN:
+    		player.moveDown();
+    		break;
+    		default:
+    			
+    	}
     }
 
     @Override
