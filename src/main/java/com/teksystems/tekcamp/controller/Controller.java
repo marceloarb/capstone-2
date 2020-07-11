@@ -15,7 +15,7 @@ public class Controller extends Canvas implements Runnable, KeyListener {
     private static final int WIDTH = 1280, HEIGHT = 960;
     private static final boolean IS_STOP_REQUESTED = false;
     private static ArrayList<Coin> coins = new ArrayList<>();
-    public static ArrayList<Block> walls = new ArrayList<>();
+    private static ArrayList<Block> walls = new ArrayList<>();
     private final Player player;
     @SuppressWarnings("unused")  // Menu use is currently commented out in another class
     private final Menu menu = new Menu();
@@ -89,10 +89,10 @@ public class Controller extends Canvas implements Runnable, KeyListener {
                 ghost.tick();
             }
         }
-        for(Coin candidate : coins) {
+        for (Coin candidate : coins) {
             if (player.intersects(candidate)) {
-            	this.score +=50;
-            	coins.remove(candidate);
+                this.score += 50;
+                coins.remove(candidate);
                 break;
             }
         }

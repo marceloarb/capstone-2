@@ -189,9 +189,7 @@ public class Ghost extends Rectangle {
 
     private boolean canMove(int nextX, int nextY) {
         Rectangle nextPosition = new Rectangle(nextX, nextY, width, height);
-
         return board.isOpen(nextPosition);
-
     }
 
     public void render(Graphics g) {

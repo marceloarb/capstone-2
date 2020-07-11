@@ -68,28 +68,20 @@ public class Board {
         return wallLocations;
     }
 
-
     public int width() {
-
         return width;
     }
 
     public int height() {
-
         return height;
     }
 
     public boolean isOpen(Rectangle nextPosition) {
-
         for (Block wall : walls) {
             if (nextPosition.intersects(wall)) {
                 return false;
             }
         }
-
         return true;
-
     }
-
-
 }
