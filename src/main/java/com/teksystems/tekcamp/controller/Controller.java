@@ -37,12 +37,8 @@ public class Controller extends Canvas implements Runnable, KeyListener {
         this.addMouseListener(menu);
         Board board = Board.getInstance();
         player = new Player((int) board.getLocationPlayer().getX(), (int) board.getLocationPlayer().getY());
-        for (Point location : Board.getInstance().getLocationGhosts()) {
-            this.ghosts.add(new Ghost(location, player.getLocation()));
-        }
-        for (Point location : Board.getInstance().getLocationCoins()) {
-            this.coins.add(new Coin(location));
-        }
+        Board.getInstance().getLocationGhosts().stream().forEach(location->this.ghosts.add(new Ghost(location, player.getLocation())));
+        Board.getInstance().getLocationCoins().stream().forEach(location -> this.coins.add(new Coin(location)));
         for (Block block : Board.getInstance().getWalls()) {
         	Point location = block.getLocation();
             this.walls.add(new Block(location));
@@ -74,7 +70,6 @@ public class Controller extends Canvas implements Runnable, KeyListener {
         	for (Block wall : walls) {
             wall.render(g);
 	        }
-	
 	        for (Coin coin : coins) {
 	            coin.render(g);
 	        }
@@ -94,9 +89,7 @@ public class Controller extends Canvas implements Runnable, KeyListener {
     private void tick() {
         if (Menu.state == State.GAME) {
             player.tick();
-            for (Ghost ghost : ghosts) {
-                ghost.tick();
-            }
+            ghosts.stream().forEach(ghost -> ghost.tick());
             for (Coin candidate : coins) {
             if (player.intersects(candidate)) {
                 this.score += 50;

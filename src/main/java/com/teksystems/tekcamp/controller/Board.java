@@ -22,6 +22,7 @@ public class Board {
             this.height = map.getHeight();
             int[] pixels = new int[width * height];
             map.getRGB(0, 0, width, height, pixels, 0, width);
+
             for (int x = 0; x < width; x++) {
                 for (int y = 0; y < height; y++) {
                     int val = pixels[x + (y * width)];
