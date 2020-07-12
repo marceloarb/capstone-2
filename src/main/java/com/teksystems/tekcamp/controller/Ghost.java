@@ -4,11 +4,9 @@ import java.awt.*;
 import java.util.Random;
 
 
-public class Ghost extends Rectangle {
+public class Ghost extends GameCharacter {
 
     private static final long serialVersionUID = 1L;
-    private static final int WIDTH = 30;
-    private static final int HEIGHT = 30;
     private static final int random = 0;
     private static final int findPath = 2;
     private static final int right = 0;
@@ -24,10 +22,12 @@ public class Ghost extends Rectangle {
     private int time = 0;
     private int lastDirection = -1;
     private Point playerLocation;
+    private Rectangle rectangle;
+    
 
     public Ghost(Point ghostLocation, Point playerLocation) {
         this.playerLocation = playerLocation;
-        setBounds(ghostLocation.x, ghostLocation.y, WIDTH, HEIGHT);
+        this.rectangle = new Rectangle(ghostLocation.x, ghostLocation.y, WIDTH, HEIGHT);
         direction = randomGen.nextInt(4);
     }
 
@@ -35,26 +35,26 @@ public class Ghost extends Rectangle {
         int smart = 1;
         if (state == random) {
             if (direction == right) {
-                if (canMove(x + speed, y)) {
-                    x += speed;
+                if (canMove((int)rectangle.getX() + speed, (int)rectangle.getY())) {
+                	rectangle.setLocation((int)rectangle.getX()+speed, (int)rectangle.getY()); 
                 } else {
                     direction = randomGen.nextInt(4);
                 }
             } else if (direction == left) {
-                if (canMove(x - speed, y)) {
-                    x -= speed;
+            	if (canMove((int)rectangle.getX() - speed, (int)rectangle.getY())) {
+                	rectangle.setLocation((int)rectangle.getX()-speed, (int)rectangle.getY()); 
                 } else {
                     direction = randomGen.nextInt(4);
                 }
             } else if (direction == up) {
-                if (canMove(x, y - speed)) {
-                    y -= speed;
+            	if (canMove((int)rectangle.getX(), (int)rectangle.getY() - speed)) {
+                	rectangle.setLocation((int)rectangle.getX(), (int)rectangle.getY()- speed); 
                 } else {
                     direction = randomGen.nextInt(4);
                 }
             } else if (direction == down) {
-                if (canMove(x, y + speed)) {
-                    y += speed;
+            	if (canMove((int)rectangle.getX(), (int)rectangle.getY() + speed)) {
+                	rectangle.setLocation((int)rectangle.getX(), (int)rectangle.getY()+ speed); 
                 } else {
                     direction = randomGen.nextInt(4);
                 }
@@ -68,36 +68,34 @@ public class Ghost extends Rectangle {
 
         } else if (state == smart) {
             boolean move = false;
-            if (x < playerLocation.getX()) {
-                if (canMove(x + speed, y)) {
-                    x += speed;
+            if (rectangle.getX() < playerLocation.getX()) {
+                if (canMove((int)rectangle.getX() + speed, (int)rectangle.getY())) {
+                	rectangle.setLocation((int)rectangle.getX()+speed, (int)rectangle.getY()); 
                     move = true;
                     lastDirection = right;
                 }
             }
-            if (x > playerLocation.getY()) {
-                if (canMove(x - speed, y)) {
-                    x -= speed;
+            if (rectangle.getX() > playerLocation.getX()) {
+                if (canMove((int)rectangle.getX() - speed, (int)rectangle.getY())) {
+                	rectangle.setLocation((int)rectangle.getX()-speed, (int)rectangle.getY()); 
                     move = true;
                     lastDirection = left;
                 }
             }
-            if (y < playerLocation.getY()) {
-                if (canMove(x, y + speed)) {
-                    y += speed;
+            if (rectangle.getY() < playerLocation.getY()) {
+                if (canMove((int)rectangle.getX() , (int)rectangle.getY() + speed)) {
+                	rectangle.setLocation((int)rectangle.getX(), (int)rectangle.getY()+speed); 
                     move = true;
                     lastDirection = down;
                 }
             }
-            if (y > playerLocation.getY()) {
-                if (canMove(x, y - speed)) {
-                    y -= speed;
+            if (rectangle.getY() > playerLocation.getY()) {
+                if (canMove((int)rectangle.getX() , (int)rectangle.getY() - speed)) {
+                	rectangle.setLocation((int)rectangle.getX(), (int)rectangle.getY()-speed); 
                     move = true;
                     lastDirection = up;
                 }
             }
-
-            if (getLocation().equals(playerLocation)) move = true;
             if (!move) {
                 state = findPath;
             }
@@ -107,94 +105,86 @@ public class Ghost extends Rectangle {
                 time = 0;
             } else if (state == findPath) {
                 if (lastDirection == right) {
-                    if (y < playerLocation.getY()) {
-                        if (canMove(x, y + speed)) {
-                            y += speed;
+                    if (rectangle.getY() < playerLocation.getY()) {
+                        if (canMove((int)rectangle.getX(), (int)rectangle.getY() + speed)) {
+                        	rectangle.setLocation((int)rectangle.getX(), (int)rectangle.getY()+speed); 
                             state = smart;
                         }
 
                     } else {
-                        if (canMove(x, y - speed)) {
-                            y -= speed;
+                        if (canMove((int)rectangle.getX(), (int)rectangle.getY() - speed)) {
+                        	rectangle.setLocation((int)rectangle.getX(), (int)rectangle.getY()-speed); 
                             state = smart;
                         }
                     }
-                    if (canMove(x + speed, y)) {
-                        x += speed;
+                    if (canMove((int)rectangle.getX(),(int) rectangle.getY() + speed)) {
+               		 rectangle.setLocation((int)rectangle.getX(), (int)rectangle.getY()+speed); 
                     }
 
                 } else if (lastDirection == left) {
-                    if (y < playerLocation.getY()) {
-                        if (canMove(x, y + speed)) {
-                            y += speed;
+                	if (rectangle.getY() > playerLocation.getY()) {
+                        if (canMove((int)rectangle.getX(), (int)rectangle.getY() - speed)) {
+                        	rectangle.setLocation((int)rectangle.getX(), (int)rectangle.getY()+speed); 
                             state = smart;
                         }
 
                     } else {
-                        if (canMove(x, y - speed)) {
-                            y -= speed;
+                        if (canMove((int)rectangle.getX(), (int)rectangle.getY() + speed)) {
+                        	rectangle.setLocation((int)rectangle.getX(), (int)rectangle.getY()-speed); 
                             state = smart;
                         }
                     }
-                    if (canMove(x - speed, y)) {
-                        x -= speed;
+                	if (canMove((int)rectangle.getX(),(int) rectangle.getY() + speed)) {
+               		 rectangle.setLocation((int)rectangle.getX(), (int)rectangle.getY()+speed); 
                     }
 
                 } else if (lastDirection == up) {
-                    if (x < playerLocation.getX()) {
-                        if (canMove(x + speed, y)) {
-                            x += speed;
+                	if (rectangle.getX() > playerLocation.getX()) {
+                        if (canMove((int)rectangle.getX()- speed, (int)rectangle.getY() )) {
+                        	rectangle.setLocation((int)rectangle.getX()+speed, (int)rectangle.getY()); 
                             state = smart;
                         }
 
                     } else {
-                        if (canMove(x - speed, y)) {
-                            x -= speed;
+                        if (canMove((int)rectangle.getX()+ speed, (int)rectangle.getY() )) {
+                        	rectangle.setLocation((int)rectangle.getX()-speed, (int)rectangle.getY()); 
                             state = smart;
                         }
                     }
-                    if (canMove(x, y - speed)) {
-                        y -= speed;
+                	if (canMove((int)rectangle.getX(),(int) rectangle.getY() + speed)) {
+               		 rectangle.setLocation((int)rectangle.getX(), (int)rectangle.getY()+speed); 
                     }
 
                 } else if (lastDirection == down) {
-                    if (x < playerLocation.getX()) {
-                        if (canMove(x + speed, y)) {
-                            x += speed;
+                	if (rectangle.getX() < playerLocation.getX()) {
+                        if (canMove((int)rectangle.getX()+ speed, (int)rectangle.getY() )) {
+                        	rectangle.setLocation((int)rectangle.getX()-speed, (int)rectangle.getY()); 
                             state = smart;
                         }
 
                     } else {
-                        if (canMove(x - speed, y)) {
-                            x -= speed;
+                        if (canMove((int)rectangle.getX()- speed, (int)rectangle.getY() )) {
+                        	rectangle.setLocation((int)rectangle.getX()+speed, (int)rectangle.getY()); 
                             state = smart;
                         }
                     }
-                    if (canMove(x, y + speed)) {
-                        y += speed;
-                    }
-                }
+                	 if (canMove((int)rectangle.getX(),(int) rectangle.getY() + speed)) {
+                		 rectangle.setLocation((int)rectangle.getX(), (int)rectangle.getY()+speed); 
+                     }
 
             }
 
             time++;
-            if (time == targetTime) {
-                state = random;
-                time = 0;
-            }
+            
 
+            }
         }
 
     }
 
-    private boolean canMove(int nextX, int nextY) {
-        Rectangle nextPosition = new Rectangle(nextX, nextY, width, height);
-        return board.isOpen(nextPosition);
-    }
-
     public void render(Graphics g) {
 
-        g.drawImage(Texture.ghost, x, y, WIDTH, HEIGHT, null);
+        g.drawImage(Texture.ghost, (int)rectangle.getX(), (int)rectangle.getY(), WIDTH, HEIGHT, null);
 
     }
 

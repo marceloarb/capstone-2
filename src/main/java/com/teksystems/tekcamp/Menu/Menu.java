@@ -37,7 +37,6 @@ public class Menu extends MouseInput{
 		g2d.draw(playButton);
 		g2d.draw(helpButton);
 		g2d.draw(quitButton);
-
 	}
 	
 	public void mousePressed(java.awt.event.MouseEvent e) {

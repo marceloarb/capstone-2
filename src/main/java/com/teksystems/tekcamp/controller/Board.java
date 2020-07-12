@@ -12,11 +12,9 @@ public class Board {
     private final ArrayList<Block> walls = new ArrayList<>();
     private final ArrayList<Point> coinsLocations = new ArrayList<>();
     private final ArrayList<Point> ghostsLocations = new ArrayList<>();
-    private final ArrayList<Point> wallLocations = new ArrayList<>();
     private int width;
     private int height;
     private Point playerLocation;
-
     private Board() {
         try {
             BufferedImage map = ImageIO.read(getClass().getResource("/Image/maze.png"));
@@ -28,7 +26,6 @@ public class Board {
                 for (int y = 0; y < height; y++) {
                     int val = pixels[x + (y * width)];
                     if (val == 0xFF000000) {
-                    	wallLocations.add(new Point(x * 32, y * 32));
                         this.walls.add(new Block(new Point(x * 32, y * 32)));
                     } else if (val == 0xff4800ff) {
                         playerLocation = new Point(x * 32, y * 32);
@@ -63,8 +60,8 @@ public class Board {
         return coinsLocations;
     }
 
-    public ArrayList<Point> getLocationWall() {
-        return wallLocations;
+    public ArrayList<Block> getWalls() {
+        return walls;
     }
 
     public int width() {

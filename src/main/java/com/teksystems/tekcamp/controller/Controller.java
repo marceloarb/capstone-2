@@ -43,7 +43,8 @@ public class Controller extends Canvas implements Runnable, KeyListener {
         for (Point location : Board.getInstance().getLocationCoins()) {
             this.coins.add(new Coin(location));
         }
-        for (Point location : Board.getInstance().getLocationWall()) {
+        for (Block block : Board.getInstance().getWalls()) {
+        	Point location = block.getLocation();
             this.walls.add(new Block(location));
         }
         new Texture();

@@ -3,20 +3,18 @@ package com.teksystems.tekcamp.controller;
 
 import java.awt.*;
 
-public class Player  {
+public class Player extends GameCharacter {
 
     private static final long serialVersionUID = 1L;
-    private static final int WIDTH = 25;
-    private static final int HEIGHT = 25;
     private final int resetX;
     private final int resetY;
     private final Board board = Board.getInstance();
     public boolean right, left, up, down;
-    private int speed = 10;
+    private int speed = 6;
     private Rectangle rectangle;
 
     public Player(int x, int y) {
-        this.rectangle = new Rectangle(x+2, y, WIDTH, HEIGHT);
+        this.rectangle = new Rectangle(x, y, WIDTH, HEIGHT);
         resetX = x;
         resetY = y;
         reset();
@@ -25,10 +23,6 @@ public class Player  {
     public void tick() {
     }
 
-    private boolean canMove(int nextX, int nextY) {
-        Rectangle nextPosition = new Rectangle(nextX, nextY, WIDTH, HEIGHT);
-        return board.isOpen(nextPosition);
-    }
 
     public void render(Graphics g) {
         g.drawImage(Texture.player[0], (int)rectangle.getX(), (int)rectangle.getY(), WIDTH, HEIGHT, null);
