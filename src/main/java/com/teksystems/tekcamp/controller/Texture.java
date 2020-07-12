@@ -8,7 +8,7 @@ public class Texture {
     private final SpriteSheet spriteSheet;
 
     public Texture() {
-        spriteSheet = new SpriteSheet("/Image/caracters.png");
+        spriteSheet = new SpriteSheet("/Image/Characters.png");
         player = new BufferedImage[2];
         player[0] = spriteSheet.getSprite(16, 0);
         player[1] = spriteSheet.getSprite(32, 0);

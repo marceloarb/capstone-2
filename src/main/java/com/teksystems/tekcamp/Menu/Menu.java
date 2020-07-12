@@ -17,7 +17,6 @@ public class Menu extends MouseInput{
 	
 	public Rectangle playButton = new Rectangle(width,250,250,50);
 	public Rectangle helpButton = new Rectangle(width,350,250,50);
-	public Rectangle quitButton = new Rectangle(width,450,250,50);
 	
 	
 	
@@ -33,10 +32,8 @@ public class Menu extends MouseInput{
 		g.setFont(new Font(Font.DIALOG,Font.BOLD,30));
 		g.drawString("Play", playButton.x+100,playButton.y+35 );
 		g.drawString("Help", helpButton.x+100,helpButton.y+35 );
-		g.drawString("Quit", quitButton.x+100,quitButton.y+35 );
 		g2d.draw(playButton);
 		g2d.draw(helpButton);
-		g2d.draw(quitButton);
 	}
 	
 	public void mousePressed(java.awt.event.MouseEvent e) {
@@ -50,10 +47,7 @@ public class Menu extends MouseInput{
 		}
 		if(locationX >= width+100 && locationX <= width+200) {
 			if(locationY >= 325 && locationY <= 400) {
-			}
-		}
-		if(locationX >= width+100 && locationX <= width+200) {
-			if(locationY >= 425 && locationY <= 500) {
+				Menu.state = State.HELP;
 			}
 		}
 		

@@ -10,7 +10,7 @@ public class Player extends GameCharacter {
     private final int resetY;
     private final Board board = Board.getInstance();
     public boolean right, left, up, down;
-    private int speed = 6;
+    private int speed = 10;
     private Rectangle rectangle;
 
     public Player(int x, int y) {

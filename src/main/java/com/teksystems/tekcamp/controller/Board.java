@@ -17,7 +17,7 @@ public class Board {
     private Point playerLocation;
     private Board() {
         try {
-            BufferedImage map = ImageIO.read(getClass().getResource("/Image/maze.png"));
+            BufferedImage map = ImageIO.read(getClass().getResource("/Image/newMaze.png"));
             this.width = map.getWidth();
             this.height = map.getHeight();
             int[] pixels = new int[width * height];

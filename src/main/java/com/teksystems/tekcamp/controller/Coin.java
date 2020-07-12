@@ -1,6 +1,7 @@
 package com.teksystems.tekcamp.controller;
 
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.Rectangle;
@@ -19,5 +20,8 @@ public class Coin extends Rectangle{
 	public void render(Graphics g) {
 		g.setColor(Color.orange);
 		g.fillRect(x, y, WIDTH, HEIGHT);
+		
+		
 	}
+	
 }

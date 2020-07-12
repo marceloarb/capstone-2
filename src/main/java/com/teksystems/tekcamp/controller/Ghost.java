@@ -103,7 +103,8 @@ public class Ghost extends GameCharacter {
             if (time == targetTime) {
                 state = random;
                 time = 0;
-            } else if (state == findPath) {
+            } 
+             if (state == findPath) {
                 if (lastDirection == right) {
                     if (rectangle.getY() < playerLocation.getY()) {
                         if (canMove((int)rectangle.getX(), (int)rectangle.getY() + speed)) {

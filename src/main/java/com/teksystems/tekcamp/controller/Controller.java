@@ -10,6 +10,7 @@ import java.awt.event.KeyListener;
 import java.awt.image.BufferStrategy;
 import java.util.ArrayList;
 
+import com.teksystems.tekcamp.Menu.Instructions;
 import com.teksystems.tekcamp.Menu.Menu;
 import com.teksystems.tekcamp.Menu.State;
 
@@ -27,6 +28,7 @@ public class Controller extends Canvas implements Runnable, KeyListener {
     private final ArrayList<Ghost> ghosts = new ArrayList<>();
     private final Thread thread = new Thread(this);
     private int score = 0;
+    private Instructions help = new Instructions();
 
     public Controller() {
         Dimension dimension = new Dimension(Controller.WIDTH, Controller.HEIGHT);
@@ -36,6 +38,7 @@ public class Controller extends Canvas implements Runnable, KeyListener {
         addKeyListener(this);
         this.addMouseListener(menu);
         Board board = Board.getInstance();
+        
         player = new Player((int) board.getLocationPlayer().getX(), (int) board.getLocationPlayer().getY());
         Board.getInstance().getLocationGhosts().stream().forEach(location->this.ghosts.add(new Ghost(location, player.getLocation())));
         Board.getInstance().getLocationCoins().stream().forEach(location -> this.coins.add(new Coin(location)));
@@ -80,6 +83,8 @@ public class Controller extends Canvas implements Runnable, KeyListener {
 	        player.render(g);
         }else if(Menu.state == State.MENU) {
         	menu.render(g);
+        }else if(Menu.state == State.HELP) {
+        	help.render(g);
         }
         
         g.dispose();
