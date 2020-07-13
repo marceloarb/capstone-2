@@ -68,28 +68,28 @@ public class Ghost extends GameCharacter {
 
         } else if (state == smart) {
             boolean move = false;
-            if (rectangle.getX() < playerLocation.getX()) {
+            if (rectangle.getX() < playerLocation.getLocation().getX()) {
                 if (canMove((int)rectangle.getX() + speed, (int)rectangle.getY())) {
                 	rectangle.setLocation((int)rectangle.getX()+speed, (int)rectangle.getY()); 
                     move = true;
                     lastDirection = right;
                 }
             }
-            if (rectangle.getX() > playerLocation.getX()) {
+            if (rectangle.getX() > playerLocation.getLocation().getX()) {
                 if (canMove((int)rectangle.getX() - speed, (int)rectangle.getY())) {
                 	rectangle.setLocation((int)rectangle.getX()-speed, (int)rectangle.getY()); 
                     move = true;
                     lastDirection = left;
                 }
             }
-            if (rectangle.getY() < playerLocation.getY()) {
+            if (rectangle.getY() < playerLocation.getLocation().getY()) {
                 if (canMove((int)rectangle.getX() , (int)rectangle.getY() + speed)) {
                 	rectangle.setLocation((int)rectangle.getX(), (int)rectangle.getY()+speed); 
                     move = true;
                     lastDirection = down;
                 }
             }
-            if (rectangle.getY() > playerLocation.getY()) {
+            if (rectangle.getY() > playerLocation.getLocation().getY()) {
                 if (canMove((int)rectangle.getX() , (int)rectangle.getY() - speed)) {
                 	rectangle.setLocation((int)rectangle.getX(), (int)rectangle.getY()-speed); 
                     move = true;
@@ -106,7 +106,7 @@ public class Ghost extends GameCharacter {
             } 
              if (state == findPath) {
                 if (lastDirection == right) {
-                    if (rectangle.getY() < playerLocation.getY()) {
+                    if (rectangle.getY() < playerLocation.getLocation().getY()) {
                         if (canMove((int)rectangle.getX(), (int)rectangle.getY() + speed)) {
                         	rectangle.setLocation((int)rectangle.getX(), (int)rectangle.getY()+speed); 
                             state = smart;
@@ -123,7 +123,7 @@ public class Ghost extends GameCharacter {
                     }
 
                 } else if (lastDirection == left) {
-                	if (rectangle.getY() > playerLocation.getY()) {
+                	if (rectangle.getY() > playerLocation.getLocation().getY()) {
                         if (canMove((int)rectangle.getX(), (int)rectangle.getY() - speed)) {
                         	rectangle.setLocation((int)rectangle.getX(), (int)rectangle.getY()+speed); 
                             state = smart;
@@ -140,7 +140,7 @@ public class Ghost extends GameCharacter {
                     }
 
                 } else if (lastDirection == up) {
-                	if (rectangle.getX() > playerLocation.getX()) {
+                	if (rectangle.getX() > playerLocation.getLocation().getX()) {
                         if (canMove((int)rectangle.getX()- speed, (int)rectangle.getY() )) {
                         	rectangle.setLocation((int)rectangle.getX()+speed, (int)rectangle.getY()); 
                             state = smart;
@@ -157,7 +157,7 @@ public class Ghost extends GameCharacter {
                     }
 
                 } else if (lastDirection == down) {
-                	if (rectangle.getX() < playerLocation.getX()) {
+                	if (rectangle.getX() < playerLocation.getLocation().getX()) {
                         if (canMove((int)rectangle.getX()+ speed, (int)rectangle.getY() )) {
                         	rectangle.setLocation((int)rectangle.getX()-speed, (int)rectangle.getY()); 
                             state = smart;

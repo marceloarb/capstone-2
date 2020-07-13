@@ -14,15 +14,21 @@ public class Instructions extends Menu{
 	
 	public void render(Graphics g) {
 		Graphics2D g2d = (Graphics2D) g;
-		
-		
 		g.setColor(Color.blue);
 		g.setFont(new Font(Font.DIALOG,Font.BOLD,50));
 		g.drawString("Pac-Man", 1000/2, 150);
 		g.setFont(new Font(Font.DIALOG,Font.BOLD,30));
 		g.drawString("Play", playButton.x+100,playButton.y+35 );
-		g.setFont(new Font(Font.DIALOG,Font.BOLD,30));
-		g.drawString("This game is blabla", 450, 400);
+		g.setColor(Color.white);
+		
+		
+		g.setFont(new Font(Font.DIALOG,Font.BOLD,20));
+		g.drawString("Eat all of the Pac-dots around the maze while avoiding the ghosts.", 250, 400);
+		g.drawString("To move the Pac-man use the arrow keys.", 250, 450);
+		g.drawString("If a ghost attacks, you will lose your life and start over.", 250, 500);
+		
+				
+				
 		
 	}
 	
