@@ -30,7 +30,6 @@ public class Ghost extends GameCharacter {
         this.rectangle = new Rectangle(ghostLocation.x, ghostLocation.y, WIDTH, HEIGHT);
         direction = randomGen.nextInt(4);
     }
-
     public void tick() {
         int smart = 1;
         if (state == random) {
@@ -182,6 +181,7 @@ public class Ghost extends GameCharacter {
         }
 
     }
+    
 
     public void render(Graphics g) {
 
